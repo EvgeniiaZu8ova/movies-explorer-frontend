@@ -1,5 +1,4 @@
 .info {
-  width: 100%;
   background-color: #ffffff;
 }
 
@@ -8,16 +7,6 @@
   max-width: 1280px;
   box-sizing: border-box;
   margin: 0 auto;
-}
-
-.info__header {
-  width: 100%;
-  height: 46px;
-  border-bottom: 1px solid #000000;
-  box-sizing: border-box;
-  font-weight: normal;
-  letter-spacing: -0.04em;
-  color: #000000;
 }
 
 .info__content {
@@ -88,11 +77,6 @@
     padding: 74px 14px 128px;
   }
 
-  .info__header {
-    font-size: 18px;
-    line-height: 22px;
-  }
-
   .info__content {
     padding: 64px 0 0;
     flex-direction: column;
@@ -143,11 +127,6 @@
 @media all and (min-width: 768px) {
   .info__container {
     padding: 95px 50px 93px;
-  }
-
-  .info__header {
-    font-size: 22px;
-    line-height: 27px;
   }
 
   .info__content {

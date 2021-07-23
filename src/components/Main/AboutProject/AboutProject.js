@@ -4,9 +4,9 @@ import "./AboutProject.css";
 
 function AboutProject(props) {
   return (
-    <section className="info">
+    <section className="section info">
       <div className="info__container">
-        <div className="info__header">О проекте</div>
+        <div className="section__header">О проекте</div>
         <div className="info__content">
           <div className="info__item">
             <h2 className="info__title">Дипломный проект включал 5 этапов</h2>

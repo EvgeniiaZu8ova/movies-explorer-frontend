@@ -5,7 +5,7 @@ import landingLogo from "../../../images/text__COLOR_landing-logo.svg";
 
 function Promo(props) {
   return (
-    <section className="promo">
+    <section className="section promo">
       <div className="promo__container">
         <h1 className="promo__title">
           Учебный проект студента факультета Веб-разработки.

@@ -1,0 +1,27 @@
+.section {
+  width: 100%;
+}
+
+.section__header {
+  width: 100%;
+  height: 46px;
+  border-bottom: 1px solid #000000;
+  box-sizing: border-box;
+  font-weight: normal;
+  letter-spacing: -0.04em;
+  color: #000000;
+}
+
+@media all and (min-width: 320px) {
+  .section__header {
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .section__header {
+    font-size: 22px;
+    line-height: 27px;
+  }
+}
