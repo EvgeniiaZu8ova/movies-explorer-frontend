@@ -51,7 +51,14 @@ function Portfolio(props) {
           <p className="portfolio__text">Портфолио</p>
           <div className="portfolio__links">
             <div className="portfolio__link">
-              <p className="portfolio__project">Статичный сайт</p>
+              <a
+                target="_blank"
+                href="https://evgeniiazu8ova.github.io/how-to-learn/"
+                rel="noreferrer"
+                className="portfolio__project"
+              >
+                Статичный сайт
+              </a>
               <a
                 target="_blank"
                 href="https://evgeniiazu8ova.github.io/how-to-learn/"
@@ -65,7 +72,14 @@ function Portfolio(props) {
               </a>
             </div>
             <div className="portfolio__link">
-              <p className="portfolio__project">Адаптивный сайт</p>
+              <a
+                target="_blank"
+                href="https://evgeniiazu8ova.github.io/russian-travel/"
+                rel="noreferrer"
+                className="portfolio__project"
+              >
+                Адаптивный сайт
+              </a>
               <a
                 target="_blank"
                 href="https://evgeniiazu8ova.github.io/russian-travel/"
@@ -79,7 +93,14 @@ function Portfolio(props) {
               </a>
             </div>
             <div className="portfolio__link">
-              <p className="portfolio__project">Одностраничное приложение</p>
+              <a
+                target="_blank"
+                href="https://evzu8ova.students.nomoredomains.club"
+                rel="noreferrer"
+                className="portfolio__project"
+              >
+                Одностраничное приложение
+              </a>
               <a
                 target="_blank"
                 href="https://evzu8ova.students.nomoredomains.club"
