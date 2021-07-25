@@ -5,12 +5,15 @@ import logo from "../../images/logo.svg";
 
 import Navigation from "../Navigation/Navigation";
 
-function Header(props) {
+function Header({ location }) {
+  const headerClassname =
+    location === "/main" ? "header" : "header header_movies";
+
   return (
-    <header className="header">
+    <header className={headerClassname}>
       <div className="header__container">
         <img src={logo} alt="Логотип" className="header__logo" />
-        <Navigation />
+        <Navigation location={location} />
       </div>
     </header>
   );
