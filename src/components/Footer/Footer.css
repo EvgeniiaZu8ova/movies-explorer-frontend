@@ -1,5 +1,10 @@
 .footer {
   width: 100%;
+  display: block;
+}
+
+.footer_hidden {
+  display: none;
 }
 
 .footer__container {

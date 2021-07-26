@@ -2,9 +2,25 @@ import React from "react";
 
 import "./Footer.css";
 
-function Footer(props) {
+function Footer({ location }) {
+  let footerClassName;
+
+  switch (location) {
+    case "/movies":
+      footerClassName = "footer";
+      break;
+    case "/saved-movies":
+      footerClassName = "footer";
+      break;
+    case "/":
+      footerClassName = "footer";
+      break;
+    default:
+      footerClassName = "footer footer_hidden";
+  }
+
   return (
-    <footer className="footer">
+    <footer className={footerClassName}>
       <div className="footer__container">
         <div className="footer__naming">
           Учебный проект Яндекс.Практикум х BeatFilm.
