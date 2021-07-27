@@ -30,7 +30,7 @@ function Navigation({ isOpen, onClose }) {
           alt="Иконка личного кабинета"
           className="popup__profile-icon"
         />
-        <caption className="popup__caption">Аккаунт</caption>
+        <p className="popup__caption">Аккаунт</p>
       </Link>
     </section>
   );

@@ -9,6 +9,7 @@ function Register(props) {
       isPathSignUp={true}
       buttonTitle="Зарегистрироваться"
       question="Уже зарегистрированы?"
+      linkPath="/signin"
       linkText="Войти"
     />
   );

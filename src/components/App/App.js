@@ -7,12 +7,14 @@ import { Route, Switch, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
+import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import UnknownPage from "../UnknownPage/UnknownPage";
 import Footer from "../Footer/Footer";
 import Navigation from "../Navigation/Navigation";
+import Preloader from "../Movies/Preloader/Preloader";
 
 function App(props) {
   const location = useLocation();
@@ -33,7 +35,7 @@ function App(props) {
           <Movies />
         </Route>
         <Route exact path="/saved-movies">
-          <Movies />
+          <SavedMovies />
         </Route>
         <Route exact path="/profile">
           <Profile />
@@ -43,6 +45,9 @@ function App(props) {
         </Route>
         <Route exact path="/signin">
           <Login />
+        </Route>
+        <Route exact path="/preloader-test">
+          <Preloader />
         </Route>
         <Route path="*">
           <UnknownPage />

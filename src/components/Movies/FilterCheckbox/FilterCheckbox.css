@@ -16,6 +16,7 @@
   outline: none;
   opacity: 1;
   transition: opacity 0.2s ease-in-out 0.2s;
+  transition: background-color 0.1s ease-in-out 0.1s;
 }
 
 .movie__filter-input:hover {
@@ -32,6 +33,7 @@
   border-radius: 50%;
   top: 2px;
   left: 2px;
+  transition: left 0.1s ease-in-out 0.1s;
 }
 
 .movie__filter-input:checked {

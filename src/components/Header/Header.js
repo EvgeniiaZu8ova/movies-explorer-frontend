@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import "./Header.css";
 import logo from "../../images/logo.svg";
 
-import NavTab from "../NavTab/NavTab";
+import NavTab from "../Main/NavTab/NavTab";
 
 function Header({ location, onMenuClick }) {
   let headerClassname;
@@ -28,7 +29,9 @@ function Header({ location, onMenuClick }) {
   return (
     <header className={headerClassname}>
       <div className="header__container">
-        <img src={logo} alt="Логотип" className="header__logo" />
+        <Link to="/">
+          <img src={logo} alt="Логотип" className="header__logo" />
+        </Link>
         <NavTab location={location} onMenuClick={onMenuClick} />
       </div>
     </header>

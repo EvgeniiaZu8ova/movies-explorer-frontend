@@ -100,7 +100,7 @@
     margin-bottom: 16px;
   }
 
-  .profile__button:last-of-type {
+  .profile__button:last-child {
     margin-bottom: 0;
   }
 }

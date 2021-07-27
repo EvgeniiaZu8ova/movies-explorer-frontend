@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./Promo.css";
-import landingLogo from "../../../images/text__COLOR_landing-logo.svg";
+import landingLogo from "../../../images/landing-big-logo.svg";
 
 function Promo(props) {
   return (

@@ -9,6 +9,7 @@ function Login(props) {
       isPathSignUp={false}
       buttonTitle="Войти"
       question="Ещё не зарегистрированы?"
+      linkPath="/signup"
       linkText="Регистрация"
     />
   );

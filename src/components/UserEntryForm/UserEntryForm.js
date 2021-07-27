@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import "./UserEntryForm.css";
 
@@ -9,6 +10,7 @@ function UserEntryForm({
   isPathSignUp,
   buttonTitle,
   question,
+  linkPath,
   linkText,
 }) {
   return (
@@ -19,45 +21,32 @@ function UserEntryForm({
           <h2 className="entry__title">{title}</h2>
           {isPathSignUp && (
             <>
-              <label for="userName" className="entry__label">
-                Имя
-              </label>
+              <label className="entry__label">Имя</label>
               <input
-                id="userName"
                 name="userName"
                 type="text"
-                defaultValue="Виталий"
+                defaultValue="Евгения"
                 className="entry__input"
               />
             </>
           )}
-          <label for="userEmail" className="entry__label">
-            E-mail
-          </label>
+          <label className="entry__label">E-mail</label>
           <input
-            id="userEmail"
             name="userEmail"
             type="email"
             defaultValue="pochta@yandex.ru"
             className="entry__input"
           />
-          <label for="userPassword" className="entry__label">
-            Пароль
-          </label>
-          <input
-            id="userPassword"
-            name="userPassword"
-            type="password"
-            className="entry__input"
-          />
+          <label className="entry__label">Пароль</label>
+          <input name="userPassword" type="password" className="entry__input" />
           <button type="submit" className="entry__button">
             {buttonTitle}
           </button>
           <p className="entry__paragraph">
             {question}
-            <a href="#" className="entry__link">
+            <Link to={linkPath} className="entry__link">
               {linkText}
-            </a>
+            </Link>
           </p>
         </form>
       </div>
