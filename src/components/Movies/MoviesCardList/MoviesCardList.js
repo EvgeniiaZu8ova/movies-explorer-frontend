@@ -3,25 +3,41 @@ import { React, useState, useEffect } from "react";
 import "./MoviesCardList.css";
 
 import MoviesCard from "../MoviesCard/MoviesCard";
+import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList({ movies }) {
+function MoviesCardList({
+  movies,
+  isLoading,
+  isLoadingSuccess,
+  isSearchActive,
+}) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   let maxCardsQuantity;
+  let increment;
 
   switch (true) {
     case screenWidth > 319 && screenWidth < 768:
       maxCardsQuantity = 5;
+      increment = 2;
       break;
     case screenWidth > 767 && screenWidth < 1280:
       maxCardsQuantity = 8;
+      increment = 2;
       break;
     case screenWidth > 1279:
       maxCardsQuantity = 12;
+      increment = 3;
       break;
     default:
       maxCardsQuantity = 5;
   }
+
+  const [cardsLimit, setCardsLimit] = useState(maxCardsQuantity);
+
+  const showMoreCards = () => {
+    setCardsLimit((prev) => prev + increment);
+  };
 
   useEffect(() => {
     function onResize() {
@@ -36,16 +52,51 @@ function MoviesCardList({ movies }) {
   });
 
   return (
-    <section className="elements">
-      <div className="elements__container">
-        {movies
-          .map((el, index) => <MoviesCard key={index} movie={el} />)
-          .slice(0, maxCardsQuantity)}
-      </div>
-      <div className="elements__pagination">
-        <button className="elements__button">Ещё</button>
-      </div>
-    </section>
+    <>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <section className="elements">
+          {isLoadingSuccess ? (
+            <>
+              {movies.length > 0 ? (
+                <>
+                  <div className="elements__container">
+                    {movies
+                      .map((el, index) => <MoviesCard key={index} movie={el} />)
+                      .slice(0, cardsLimit)}
+                  </div>
+                  {cardsLimit <= movies.length && (
+                    <div className="elements__pagination">
+                      <button
+                        onClick={showMoreCards}
+                        className="elements__button"
+                      >
+                        Ещё
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {isSearchActive && (
+                    <p className="elements__caption">
+                      По Вашему запросу ничего не найдено.
+                    </p>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            <p className="elements__caption elements__caption_error">
+              Во время запроса произошла ошибка. Возможно, проблема с
+              соединением или сервер недоступен. Подождите немного и попробуйте
+              ещё раз.
+            </p>
+          )}
+        </section>
+      )}
+    </>
   );
 }
 

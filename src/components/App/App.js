@@ -14,11 +14,9 @@ import Login from "../Login/Login";
 import UnknownPage from "../UnknownPage/UnknownPage";
 import Footer from "../Footer/Footer";
 import Navigation from "../Navigation/Navigation";
-import Preloader from "../Movies/Preloader/Preloader";
 
-function App(props) {
+function App() {
   const location = useLocation();
-
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const openNavigation = () => setIsNavigationOpen(true);
   const closeNavigation = () => setIsNavigationOpen(false);
@@ -45,9 +43,6 @@ function App(props) {
         </Route>
         <Route exact path="/signin">
           <Login />
-        </Route>
-        <Route exact path="/preloader-test">
-          <Preloader />
         </Route>
         <Route path="*">
           <UnknownPage />

@@ -5,8 +5,14 @@ import "./SearchForm.css";
 import useFormAndValidation from "../../../utils/useFormAndValidation";
 
 function SearchForm({ onSearchClick }) {
-  const { values, errors, isValid, handleChange, handleCustomizedError } =
-    useFormAndValidation();
+  const {
+    values,
+    errors,
+    isValid,
+    handleChange,
+    handleCustomizedError,
+    resetForm,
+  } = useFormAndValidation();
 
   const movieSearchInputName = "movieSearch";
   const movieSearchMessage = "Нужно ввести ключевое слово";
@@ -18,6 +24,7 @@ function SearchForm({ onSearchClick }) {
       handleCustomizedError(movieSearchInputName, movieSearchMessage);
     } else {
       onSearchClick(values[movieSearchInputName]);
+      resetForm();
     }
   };
 
@@ -35,7 +42,7 @@ function SearchForm({ onSearchClick }) {
         className={`movie__search-input ${
           isValid === false && "movie__search-input_error"
         }`}
-        value={values.movie}
+        value={values.movieSearch || ""}
         onChange={handleChange}
       />
       <button type="submit" className="movie__search-button">
