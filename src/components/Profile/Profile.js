@@ -25,6 +25,7 @@ function Profile({ userName = "Евгения" }) {
             type="email"
             defaultValue="pochta@yandex.ru"
             className="profile__input"
+            disabled={true}
           />
         </div>
         <button type="submit" className="profile__button">

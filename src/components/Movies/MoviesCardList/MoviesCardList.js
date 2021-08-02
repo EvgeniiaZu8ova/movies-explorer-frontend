@@ -4,7 +4,7 @@ import "./MoviesCardList.css";
 
 import MoviesCard from "../MoviesCard/MoviesCard";
 
-function MoviesCardList(props) {
+function MoviesCardList({ movies }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   let maxCardsQuantity;
@@ -23,14 +23,6 @@ function MoviesCardList(props) {
       maxCardsQuantity = 5;
   }
 
-  function getCards() {
-    let cardList = [];
-    for (let i = 0; i < 15; i++) {
-      cardList.push(<MoviesCard key={i} />);
-    }
-    return cardList;
-  }
-
   useEffect(() => {
     function onResize() {
       setScreenWidth(window.innerWidth);
@@ -46,7 +38,9 @@ function MoviesCardList(props) {
   return (
     <section className="elements">
       <div className="elements__container">
-        {getCards().slice(0, maxCardsQuantity)}
+        {movies
+          .map((el, index) => <MoviesCard key={index} movie={el} />)
+          .slice(0, maxCardsQuantity)}
       </div>
       <div className="elements__pagination">
         <button className="elements__button">Ещё</button>
