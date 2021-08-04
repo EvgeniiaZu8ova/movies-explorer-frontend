@@ -4,27 +4,35 @@ import "./Movies.css";
 
 import moviesApi from "../../utils/MoviesApi";
 
+import filterMovies from "../../utils/moviesFilter";
+import filterShortMovies from "../../utils/shortMoviesFilter";
+
 import SearchForm from "./SearchForm/SearchForm";
 import FilterCheckbox from "./FilterCheckbox/FilterCheckbox";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
 
-function Movies() {
+function Movies({ onSave }) {
   const [searchMovieInput, setSearchMovieInput] = useState("");
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSuccess, setIsLoadingSuccess] = useState(true);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isCheckboxActive, setIsCheckboxActive] = useState(false);
 
   function getSearchMovieInput(input) {
     setSearchMovieInput(input.toLowerCase());
     setIsSearchActive(true);
   }
 
+  function handleCheckboxClick() {
+    setIsCheckboxActive((prev) => !prev);
+  }
+
   useEffect(() => {
-    const storageFilms = localStorage.getItem("savedMoviesSearch");
+    const storageFilms = JSON.parse(localStorage.getItem("savedMoviesSearch"));
 
     if (storageFilms) {
-      setMovies(JSON.parse(storageFilms));
+      setMovies(storageFilms);
     }
   }, []);
 
@@ -39,15 +47,7 @@ function Movies() {
         .then((res) => {
           setIsLoading(false);
 
-          const filteredMovies = res.filter((el) => {
-            const filmNameRU = el.nameRU && el.nameRU.toLowerCase();
-            const filmNameEN = el.nameEN && el.nameEN.toLowerCase();
-
-            return (
-              (filmNameRU && filmNameRU.includes(searchMovieInput)) ||
-              (filmNameEN && filmNameEN.includes(searchMovieInput))
-            );
-          });
+          const filteredMovies = filterMovies(res, searchMovieInput);
 
           setMovies(filteredMovies);
 
@@ -55,6 +55,8 @@ function Movies() {
             "savedMoviesSearch",
             JSON.stringify(filteredMovies)
           );
+
+          setIsCheckboxActive(false);
         })
         .catch((err) => {
           console.log(err);
@@ -63,16 +65,32 @@ function Movies() {
     }
   }, [searchMovieInput]);
 
+  useEffect(() => {
+    const storageFilms = JSON.parse(localStorage.getItem("savedMoviesSearch"));
+    const filteredShortMovies = filterShortMovies(storageFilms);
+
+    const finalMovies =
+      isCheckboxActive === true ? filteredShortMovies : storageFilms;
+
+    if (storageFilms) {
+      setMovies(finalMovies);
+    }
+  }, [isCheckboxActive]);
+
   return (
     <section className="movies">
       <div className="movies__container">
         <SearchForm onSearchClick={getSearchMovieInput} />
-        <FilterCheckbox />
+        <FilterCheckbox
+          isChecked={isCheckboxActive}
+          onClick={handleCheckboxClick}
+        />
         <MoviesCardList
           movies={movies}
           isLoading={isLoading}
           isLoadingSuccess={isLoadingSuccess}
           isSearchActive={isSearchActive}
+          onClick={onSave}
         />
       </div>
     </section>

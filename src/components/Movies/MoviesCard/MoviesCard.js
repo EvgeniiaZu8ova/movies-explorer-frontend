@@ -8,27 +8,36 @@ import iconDelete from "../../../images/close-icon.svg";
 
 import "./MoviesCard.css";
 
-function MoviesCard({ movie }) {
-  const { nameRU, duration, image } = movie;
+function MoviesCard({ movie, onClick }) {
+  const { nameRU, duration, image, trailerLink, trailer } = movie;
+  const finalTrailerLink = trailerLink ? trailerLink : trailer;
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  const location = useLocation();
+
+  const movieImage =
+    location.pathname === "/saved-movies"
+      ? image
+      : `https://api.nomoreparties.co${image.url}`;
 
   const hours = duration && Math.floor(duration / 60);
   const minutes = duration && duration - hours * 60;
-
-  const location = useLocation();
-  const [isSaved, setIsSaved] = useState(false);
 
   const saveIconClassName = isSaved
     ? "article__icon-block article__icon-block_active"
     : "article__icon-block";
 
-  function onSaveClick() {
-    if (location.pathname !== "/saved-movies") {
-      if (isSaved) {
-        setIsSaved(false);
-      } else {
-        setIsSaved(true);
-      }
+  function handleClick(e) {
+    if (location.pathname === "/movies") {
+      setIsSaved((prev) => !prev);
     }
+
+    const movieName = e.target
+      .closest(".article")
+      .querySelector(".article__title").textContent;
+
+    onClick(movieName);
   }
 
   return (
@@ -40,7 +49,7 @@ function MoviesCard({ movie }) {
             {hours > 0 && `${hours}ч`} {minutes > 0 && `${minutes}м`}
           </p>
         </div>
-        <div className={saveIconClassName} onClick={onSaveClick}>
+        <div className={saveIconClassName} onClick={handleClick}>
           {location.pathname === "/saved-movies" ? (
             <img
               src={iconDelete}
@@ -56,11 +65,13 @@ function MoviesCard({ movie }) {
           )}
         </div>
       </div>
-      <img
-        src={`https://api.nomoreparties.co${image.url}`}
-        alt="Картинка карточки"
-        className="article__image"
-      />
+      <a href={finalTrailerLink} target="_blank" rel="noreferrer">
+        <img
+          src={movieImage}
+          alt="Картинка карточки"
+          className="article__image"
+        />
+      </a>
     </div>
   );
 }

@@ -2,13 +2,15 @@ import { React, useState, useEffect } from "react";
 
 import { useHistory } from "react-router";
 
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 import "./App.css";
 
 import mainApi from "../../utils/MainApi";
 
 import CurrentUserContext from "../../contexts/CurrentUserContext";
+
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -25,14 +27,17 @@ function App() {
   const location = useLocation();
   const history = useHistory();
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
-  const openNavigation = () => setIsNavigationOpen(true);
-  const closeNavigation = () => setIsNavigationOpen(false);
 
   const [registerErrorMessage, setRegisterErrorMessage] = useState("");
   const [loginErrorMessage, setLoginErrorMessage] = useState("");
 
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
+
+  const [savedMovies, setSavedMovies] = useState([]);
+
+  const openNavigation = () => setIsNavigationOpen(true);
+  const closeNavigation = () => setIsNavigationOpen(false);
 
   function onRegister(data) {
     return mainApi
@@ -87,6 +92,23 @@ function App() {
       });
   }
 
+  function handleSaveMovie(movieName) {
+    const storageFilms = JSON.parse(localStorage.getItem("savedMoviesSearch"));
+    const myMovie = storageFilms.find((el) => el.nameRU === movieName);
+
+    return mainApi.createMovie(myMovie).then((data) => {
+      setSavedMovies([...savedMovies, data]);
+    });
+  }
+
+  function handleDeleteMovie(movieName) {
+    const myMovie = savedMovies.find((el) => el.nameRU === movieName);
+
+    return mainApi.deleteMovie(myMovie._id).then(() => {
+      setSavedMovies(savedMovies.filter((el) => el._id !== myMovie._id));
+    });
+  }
+
   useEffect(() => {
     if (loggedIn) {
       history.push("./movies");
@@ -94,18 +116,21 @@ function App() {
   }, [loggedIn, history]);
 
   useEffect(() => {
-    mainApi
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
+    Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
+      .then(([userData, movies]) => {
+        setCurrentUser(userData);
         setLoggedIn(true);
+        setSavedMovies(movies);
       })
       .catch((err) => {
         if (err.message === "Ошибка 401") {
           history.push("./");
           console.log("Необходимо пройти авторизацию");
         } else {
-          console.log("Ошибка при загрузке данных пользователя", err.message);
+          console.log(
+            "Ошибка при загрузке данных пользователя и сохранённых фильмов",
+            err.message
+          );
         }
       });
   }, [history, loggedIn]);
@@ -119,15 +144,29 @@ function App() {
           <Route exact path="/">
             <Main />
           </Route>
-          <Route exact path="/movies">
-            <Movies />
-          </Route>
-          <Route exact path="/saved-movies">
-            <SavedMovies />
-          </Route>
-          <Route exact path="/profile">
-            <Profile onUpdate={handleUpdateUser} onLogout={onLogout} />
-          </Route>
+          <ProtectedRoute
+            exact
+            path="/movies"
+            loggedIn={loggedIn}
+            component={Movies}
+            onSave={handleSaveMovie}
+          />
+          <ProtectedRoute
+            exact
+            path="/saved-movies"
+            loggedIn={loggedIn}
+            component={SavedMovies}
+            movies={savedMovies}
+            onDelete={handleDeleteMovie}
+          />
+          <ProtectedRoute
+            exact
+            path="/profile"
+            loggedIn={loggedIn}
+            component={Profile}
+            onUpdate={handleUpdateUser}
+            onLogout={onLogout}
+          />
           <Route exact path="/signup">
             <Register
               onSubmit={onRegister}
@@ -139,6 +178,9 @@ function App() {
           </Route>
           <Route path="*">
             <UnknownPage />
+          </Route>
+          <Route>
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>
 

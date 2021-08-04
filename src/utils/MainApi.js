@@ -50,12 +50,14 @@ class MainApi {
       year,
       description,
       image,
-      trailer,
-      movieId,
+      trailerLink,
+      id,
       nameRU,
       nameEN,
-      thumbnail,
     } = data;
+
+    const imageUrl = `https://api.nomoreparties.co${image.url}`;
+    const thumbnail = `https://api.nomoreparties.co${image.formats.thumbnail.url}`;
 
     return fetch(`${this._baseUrl}/movies`, {
       method: "POST",
@@ -67,9 +69,9 @@ class MainApi {
         duration: duration,
         year: year,
         description: description,
-        image: image,
-        trailer: trailer,
-        movieId: movieId,
+        image: imageUrl,
+        trailer: trailerLink,
+        movieId: id,
         nameRU: nameRU,
         nameEN: nameEN,
         thumbnail: thumbnail,

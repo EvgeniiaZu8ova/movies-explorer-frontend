@@ -10,6 +10,7 @@ function MoviesCardList({
   isLoading,
   isLoadingSuccess,
   isSearchActive,
+  onClick,
 }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
@@ -63,7 +64,9 @@ function MoviesCardList({
                 <>
                   <div className="elements__container">
                     {movies
-                      .map((el, index) => <MoviesCard key={index} movie={el} />)
+                      .map((el, index) => (
+                        <MoviesCard key={index} movie={el} onClick={onClick} />
+                      ))
                       .slice(0, cardsLimit)}
                   </div>
                   {cardsLimit <= movies.length && (
