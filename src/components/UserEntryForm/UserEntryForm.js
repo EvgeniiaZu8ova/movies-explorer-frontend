@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import useFormAndValidation from "../../utils/useFormAndValidation";
+
 import "./UserEntryForm.css";
 
 import logo from "../../images/logo.svg";
@@ -12,36 +14,96 @@ function UserEntryForm({
   question,
   linkPath,
   linkText,
+  onSubmit,
+  submitErrorMessage,
 }) {
+  const { values, errors, isValid, handleChange, resetForm } =
+    useFormAndValidation();
+
+  let userErrorMessage;
+
+  switch (submitErrorMessage) {
+    case "Ошибка 409":
+      userErrorMessage = "Пользователь с такими данными уже существует.";
+      break;
+    case "Ошибка 401":
+      userErrorMessage = "Неверный логин или пароль.";
+      break;
+    default:
+      userErrorMessage =
+        "При попытке отправить данные произошла ошибка. Проверьте корректность введённых данных или повторите попытку позже.";
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(values);
+    resetForm();
+  };
+
   return (
     <section className="section entry">
       <div className="entry__container">
         <img src={logo} alt="Логотип проекта" className="entry__logo" />
-        <form noValidate className="entry__form">
+        <form noValidate onSubmit={handleSubmit} className="entry__form">
           <h2 className="entry__title">{title}</h2>
           {isPathSignUp && (
             <>
-              <label className="entry__label">Имя</label>
+              <label htmlFor="name" className="entry__label">
+                Имя
+              </label>
               <input
-                name="userName"
+                name="name"
                 type="text"
-                defaultValue="Евгения"
+                minLength="2"
+                maxLength="30"
+                pattern="[a-zA-Zа-яА-Я\sёЁ-]{2,30}"
+                value={values.name || ""}
+                onChange={handleChange}
                 className="entry__input"
+                required
               />
+              <span className="entry__input-error">{errors.name}</span>
             </>
           )}
-          <label className="entry__label">E-mail</label>
+          <label htmlFor="email" className="entry__label">
+            E-mail
+          </label>
           <input
-            name="userEmail"
+            name="email"
             type="email"
-            defaultValue="pochta@yandex.ru"
+            value={values.email || ""}
+            onChange={handleChange}
             className="entry__input"
+            required
           />
-          <label className="entry__label">Пароль</label>
-          <input name="userPassword" type="password" className="entry__input" />
-          <button type="submit" className="entry__button">
-            {buttonTitle}
-          </button>
+          <span className="entry__input-error">{errors.email}</span>
+          <label htmlFor="userPassword" className="entry__label">
+            Пароль
+          </label>
+          <input
+            name="password"
+            type="password"
+            value={values.password || ""}
+            onChange={handleChange}
+            className="entry__input"
+            minLength="8"
+            required
+          />
+          <span className="entry__input-error">{errors.password}</span>
+          <div className="entry__button-area">
+            {submitErrorMessage && (
+              <span className="entry__submit-error">{userErrorMessage}</span>
+            )}
+            <button
+              type="submit"
+              disabled={isValid === false && true}
+              className={`entry__button ${
+                isValid === false && "entry__button_disabled"
+              }`}
+            >
+              {buttonTitle}
+            </button>
+          </div>
           <p className="entry__paragraph">
             {question}
             <Link to={linkPath} className="entry__link">

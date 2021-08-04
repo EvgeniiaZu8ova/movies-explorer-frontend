@@ -3,7 +3,7 @@ import { mainApiOptions } from "./utils";
 class MainApi {
   constructor(config) {
     this._baseUrl = config.url;
-    this._headers = config._headers;
+    this._headers = config.headers;
   }
 
   _handlePromise(res) {
@@ -18,7 +18,7 @@ class MainApi {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
       credentials: "include",
-    }).then((res) => this._handlePromise());
+    }).then((res) => this._handlePromise(res));
   }
 
   updateUserInfo(data) {

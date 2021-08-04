@@ -2,7 +2,7 @@ import React from "react";
 
 import UserEntryForm from "../UserEntryForm/UserEntryForm";
 
-function Register(props) {
+function Register({ onSubmit, errorMessage }) {
   return (
     <UserEntryForm
       title="Добро пожаловать!"
@@ -11,6 +11,8 @@ function Register(props) {
       question="Уже зарегистрированы?"
       linkPath="/signin"
       linkText="Войти"
+      onSubmit={onSubmit}
+      submitErrorMessage={errorMessage}
     />
   );
 }

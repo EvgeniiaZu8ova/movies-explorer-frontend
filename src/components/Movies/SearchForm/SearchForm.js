@@ -40,7 +40,7 @@ function SearchForm({ onSearchClick }) {
         type="text"
         placeholder="Фильм"
         className={`movie__search-input ${
-          isValid === false && "movie__search-input_error"
+          errors.movieSearch && "movie__search-input_error"
         }`}
         value={values.movieSearch || ""}
         onChange={handleChange}

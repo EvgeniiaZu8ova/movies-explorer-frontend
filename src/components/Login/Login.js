@@ -2,7 +2,7 @@ import React from "react";
 
 import UserEntryForm from "../UserEntryForm/UserEntryForm";
 
-function Login(props) {
+function Login({ onSubmit, errorMessage }) {
   return (
     <UserEntryForm
       title="Рады видеть!"
@@ -11,6 +11,8 @@ function Login(props) {
       question="Ещё не зарегистрированы?"
       linkPath="/signup"
       linkText="Регистрация"
+      onSubmit={onSubmit}
+      submitErrorMessage={errorMessage}
     />
   );
 }
