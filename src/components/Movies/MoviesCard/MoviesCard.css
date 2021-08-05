@@ -19,6 +19,9 @@
   line-height: 18px;
   color: #000000;
   margin: 0 0 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .article__subtitle {
@@ -61,4 +64,22 @@
   width: 100%;
   height: calc(100% - 68px);
   object-fit: cover;
+}
+
+@media all and (min-width: 320px) {
+  .article__title {
+    max-width: 230px;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .article__title {
+    max-width: 270px;
+  }
+}
+
+@media all and (min-width: 1280px) {
+  .article__title {
+    max-width: 300px;
+  }
 }

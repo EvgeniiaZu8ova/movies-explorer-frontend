@@ -4,7 +4,7 @@ import "./AboutMe.css";
 
 import avatar from "../../../images/avatar.png";
 
-function AboutMe(props) {
+function AboutMe() {
   return (
     <div className="portfolio__info">
       <div className="portfolio__about">

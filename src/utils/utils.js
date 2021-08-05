@@ -6,8 +6,7 @@ export const moviesApiOptions = {
 };
 
 export const mainApiOptions = {
-  // url: "https://api.evzu8ova.movies.nomoredomains.club",
-  url: "http://localhost:3001",
+  url: "https://api.evzu8ova.movies.nomoredomains.club",
   headers: {
     "Content-Type": "application/json",
   },

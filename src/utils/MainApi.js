@@ -56,7 +56,20 @@ class MainApi {
       nameEN,
     } = data;
 
-    const finalCountry = country === null ? "Неизвестно" : country;
+    const finalCountry =
+      country === null
+        ? "Неизвестно"
+        : country.length > 30
+        ? country.slice(0, 30)
+        : country;
+
+    const finalDirector =
+      director === null
+        ? "Неизвестно"
+        : director.length > 30
+        ? director.slice(0, 30)
+        : director;
+
     const imageUrl = `https://api.nomoreparties.co${image.url}`;
     const thumbnail = `https://api.nomoreparties.co${image.formats.thumbnail.url}`;
 
@@ -66,7 +79,7 @@ class MainApi {
       credentials: "include",
       body: JSON.stringify({
         country: finalCountry,
-        director: director,
+        director: finalDirector,
         duration: duration,
         year: year,
         description: description,

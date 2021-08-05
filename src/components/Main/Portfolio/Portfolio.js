@@ -6,7 +6,7 @@ import AboutMe from "../AboutMe/AboutMe";
 
 import arrow from "../../../images/landing-arrow.svg";
 
-function Portfolio(props) {
+function Portfolio() {
   return (
     <section className="section portfolio">
       <div className="portfolio__container">

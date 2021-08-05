@@ -3,7 +3,7 @@ import React from "react";
 import "./Promo.css";
 import landingLogo from "../../../images/landing-big-logo.svg";
 
-function Promo(props) {
+function Promo() {
   return (
     <section className="section promo">
       <div className="promo__container">

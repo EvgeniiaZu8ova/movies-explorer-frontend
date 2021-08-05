@@ -7,7 +7,7 @@ import AboutProject from "./AboutProject/AboutProject";
 import Techs from "./Techs/Techs";
 import Portfolio from "./Portfolio/Portfolio";
 
-function Main(props) {
+function Main() {
   return (
     <main className="content">
       <Promo />

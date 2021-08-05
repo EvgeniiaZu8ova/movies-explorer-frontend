@@ -6,7 +6,7 @@ import logo from "../../images/logo.svg";
 
 import NavTab from "../Main/NavTab/NavTab";
 
-function Header({ location, onMenuClick }) {
+function Header({ location, onMenuClick, onLogoClick }) {
   let headerClassname;
 
   switch (location) {
@@ -29,7 +29,7 @@ function Header({ location, onMenuClick }) {
   return (
     <header className={headerClassname}>
       <div className="header__container">
-        <Link to="/">
+        <Link to="/" onClick={onLogoClick}>
           <img src={logo} alt="Логотип" className="header__logo" />
         </Link>
         <NavTab location={location} onMenuClick={onMenuClick} />

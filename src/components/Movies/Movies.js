@@ -6,6 +6,7 @@ import moviesApi from "../../utils/MoviesApi";
 
 import filterMovies from "../../utils/moviesFilter";
 import filterShortMovies from "../../utils/shortMoviesFilter";
+import checkIsMovieSaved from "../../utils/checkIsMovieSaved";
 
 import SearchForm from "./SearchForm/SearchForm";
 import FilterCheckbox from "./FilterCheckbox/FilterCheckbox";
@@ -18,6 +19,7 @@ function Movies({ myMovies, onSave, onDelete }) {
   const [isLoadingSuccess, setIsLoadingSuccess] = useState(true);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isCheckboxActive, setIsCheckboxActive] = useState(false);
+  const [isLocalStorageChanged, setIsLocalStorageChanged] = useState(false);
 
   function getSearchMovieInput(input) {
     setSearchMovieInput(input.toLowerCase());
@@ -28,32 +30,18 @@ function Movies({ myMovies, onSave, onDelete }) {
     setIsCheckboxActive((prev) => !prev);
   }
 
-  function checkIsMovieSaved(movies, myMovies) {
-    return movies.map((el) => {
-      let isSaved;
-
-      if (myMovies.find((item) => item.nameRU === el.nameRU)) {
-        isSaved = true;
-      } else {
-        isSaved = false;
-      }
-
-      el.isSaved = isSaved;
-
-      return el;
-    });
-  }
-
   useEffect(() => {
     const storageFilms = JSON.parse(localStorage.getItem("savedMoviesSearch"));
 
     if (storageFilms) {
       const finalMovies = checkIsMovieSaved(storageFilms, myMovies);
       setMovies(finalMovies);
+      setIsCheckboxActive(false);
 
       localStorage.setItem("savedMoviesSearch", JSON.stringify(finalMovies));
+      setIsLocalStorageChanged(false);
     }
-  }, [myMovies]);
+  }, [myMovies, isLocalStorageChanged]);
 
   useEffect(() => {
     if (searchMovieInput === "") {
@@ -64,18 +52,18 @@ function Movies({ myMovies, onSave, onDelete }) {
       moviesApi
         .getBeatfilmMovies()
         .then((res) => {
-          setIsLoading(false);
-
           const filteredMovies = filterMovies(res, searchMovieInput);
-
-          setMovies(filteredMovies);
 
           localStorage.setItem(
             "savedMoviesSearch",
             JSON.stringify(filteredMovies)
           );
 
+          setIsLoading(false);
           setIsCheckboxActive(false);
+
+          setMovies(filteredMovies);
+          setIsLocalStorageChanged(true);
         })
         .catch((err) => {
           console.log(err);

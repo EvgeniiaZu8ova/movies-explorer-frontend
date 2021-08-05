@@ -1,5 +1,6 @@
 .movies {
   width: 100%;
+  min-height: calc(100vh - 74px - 172px);
   background-color: #ffffff;
 }
 

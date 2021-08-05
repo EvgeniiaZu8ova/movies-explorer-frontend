@@ -17,7 +17,7 @@ function SearchForm({ onSearchClick }) {
   const movieSearchInputName = "movieSearch";
   const movieSearchMessage = "Нужно ввести ключевое слово";
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
 
     if (!values[movieSearchInputName]) {
@@ -26,7 +26,7 @@ function SearchForm({ onSearchClick }) {
       onSearchClick(values[movieSearchInputName]);
       resetForm();
     }
-  };
+  }
 
   return (
     <form

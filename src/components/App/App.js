@@ -36,28 +36,45 @@ function App() {
 
   const [savedMovies, setSavedMovies] = useState([]);
 
-  const openNavigation = () => setIsNavigationOpen(true);
-  const closeNavigation = () => setIsNavigationOpen(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSuccess, setIsLoadingSuccess] = useState(true);
+
+  function openNavigation() {
+    setIsNavigationOpen(true);
+  }
+
+  function closeNavigation() {
+    setIsNavigationOpen(false);
+  }
 
   function onRegister(data) {
+    setIsLoading(true);
+
     return mainApi
       .register(data)
       .then(() => {
+        setIsLoading(false);
         history.push("./signin");
       })
       .catch((err) => {
+        setIsLoading(false);
         setRegisterErrorMessage(err.message);
       });
   }
 
   function onLogin(data) {
+    setIsLoading(true);
+
     return mainApi
       .login(data)
       .then(() => {
+        setIsLoading(false);
         history.push("./movies");
         setLoggedIn(true);
+        localStorage.setItem("loggedIn", "User is authorized");
       })
       .catch((err) => {
+        setIsLoading(false);
         setLoginErrorMessage(err.message);
       });
   }
@@ -67,23 +84,29 @@ function App() {
       .logout()
       .then(() => {
         setLoggedIn(false);
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("savedMoviesSearch");
         history.push("./");
       })
       .catch((err) => {
         console.log(
-          "Ошибка при попытке выхода из лчиного кабинета",
+          "Ошибка при попытке выхода из личного кабинета",
           err.message
         );
       });
   }
 
   function handleUpdateUser(data) {
+    setIsLoading(true);
+
     return mainApi
       .updateUserInfo(data)
       .then((user) => {
+        setIsLoading(false);
         setCurrentUser(user);
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log(
           "Ошибка при попытке обновить данные пользователя",
           err.message,
@@ -123,36 +146,43 @@ function App() {
   }
 
   useEffect(() => {
-    if (loggedIn) {
-      history.push("./movies");
-    } else {
+    const isLoggedIn = localStorage.getItem("loggedIn");
+
+    if (!isLoggedIn) {
       history.push("./");
+    } else {
+      history.push("./movies");
+      setIsLoading(true);
+
+      Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
+        .then(([userData, movies]) => {
+          setIsLoading(false);
+          setCurrentUser(userData);
+          setLoggedIn(true);
+          setSavedMovies(movies);
+        })
+        .catch((err) => {
+          if (err.message === "Ошибка 401") {
+            console.log("Необходимо пройти авторизацию");
+          } else {
+            setIsLoadingSuccess(false);
+            console.log(
+              "Ошибка при загрузке данных пользователя и сохранённых фильмов",
+              err.message
+            );
+          }
+        });
     }
   }, [loggedIn, history]);
-
-  useEffect(() => {
-    Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
-      .then(([userData, movies]) => {
-        setCurrentUser(userData);
-        setLoggedIn(true);
-        setSavedMovies(movies);
-      })
-      .catch((err) => {
-        if (err.message === "Ошибка 401") {
-          console.log("Необходимо пройти авторизацию");
-        } else {
-          console.log(
-            "Ошибка при загрузке данных пользователя и сохранённых фильмов",
-            err.message
-          );
-        }
-      });
-  }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header location={location.pathname} onMenuClick={openNavigation} />
+        <Header
+          location={location.pathname}
+          onMenuClick={openNavigation}
+          onLogoClick={onLogout}
+        />
 
         <Switch>
           <Route exact path="/">
@@ -172,6 +202,8 @@ function App() {
             path="/saved-movies"
             loggedIn={loggedIn}
             component={SavedMovies}
+            isLoading={isLoading}
+            isLoadingSuccess={isLoadingSuccess}
             movies={savedMovies}
             onSave={handleSaveMovie}
             onDelete={handleDeleteMovie}
@@ -182,16 +214,22 @@ function App() {
             loggedIn={loggedIn}
             component={Profile}
             onUpdate={handleUpdateUser}
+            isLoading={isLoading}
             onLogout={onLogout}
           />
           <Route exact path="/signup">
             <Register
               onSubmit={onRegister}
+              isLoading={isLoading}
               errorMessage={registerErrorMessage}
             />
           </Route>
           <Route exact path="/signin">
-            <Login onSubmit={onLogin} errorMessage={loginErrorMessage} />
+            <Login
+              onSubmit={onLogin}
+              isLoading={isLoading}
+              errorMessage={loginErrorMessage}
+            />
           </Route>
           <Route path="*">
             <UnknownPage />

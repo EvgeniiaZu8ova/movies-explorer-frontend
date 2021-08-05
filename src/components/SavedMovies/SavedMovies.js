@@ -9,11 +9,15 @@ import SearchForm from "../Movies/SearchForm/SearchForm";
 import FilterCheckbox from "../Movies/FilterCheckbox/FilterCheckbox";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 
-function SavedMovies({ movies, onSave, onDelete }) {
+function SavedMovies({
+  isLoading,
+  isLoadingSuccess,
+  movies,
+  onSave,
+  onDelete,
+}) {
   const [searchMovieInput, setSearchMovieInput] = useState("");
   const [filteredMovies, setFilteredMovies] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isLoadingSuccess, setIsLoadingSuccess] = useState(true);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isCheckboxActive, setIsCheckboxActive] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
@@ -56,8 +60,8 @@ function SavedMovies({ movies, onSave, onDelete }) {
         />
         <MoviesCardList
           movies={isFiltered ? filteredMovies : movies}
-          isLoading={false}
-          isLoadingSuccess={true}
+          isLoading={isLoading}
+          isLoadingSuccess={isLoadingSuccess}
           isSearchActive={isSearchActive}
           onSave={onSave}
           onDelete={onDelete}

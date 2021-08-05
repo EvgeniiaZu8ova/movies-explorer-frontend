@@ -4,10 +4,12 @@ import { useHistory } from "react-router-dom";
 
 import "./UnknownPage.css";
 
-function UnknownPage(props) {
+function UnknownPage() {
   const history = useHistory();
 
-  const goToPreviousPage = () => history.goBack();
+  function goToPreviousPage() {
+    history.goBack();
+  }
 
   return (
     <section className="unknown">

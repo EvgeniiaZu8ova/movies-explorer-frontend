@@ -7,6 +7,8 @@ import "./UserEntryForm.css";
 
 import logo from "../../images/logo.svg";
 
+import Preloader from "../Movies/Preloader/Preloader";
+
 function UserEntryForm({
   title,
   isPathSignUp,
@@ -15,6 +17,7 @@ function UserEntryForm({
   linkPath,
   linkText,
   onSubmit,
+  isLoading,
   submitErrorMessage,
 }) {
   const { values, errors, isValid, handleChange, resetForm } =
@@ -34,11 +37,11 @@ function UserEntryForm({
         "При попытке отправить данные произошла ошибка. Проверьте корректность введённых данных или повторите попытку позже.";
   }
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
     onSubmit(values);
     resetForm();
-  };
+  }
 
   return (
     <section className="section entry">
@@ -46,70 +49,78 @@ function UserEntryForm({
         <img src={logo} alt="Логотип проекта" className="entry__logo" />
         <form noValidate onSubmit={handleSubmit} className="entry__form">
           <h2 className="entry__title">{title}</h2>
-          {isPathSignUp && (
+          {isLoading ? (
+            <Preloader />
+          ) : (
             <>
-              <label htmlFor="name" className="entry__label">
-                Имя
+              {isPathSignUp && (
+                <>
+                  <label htmlFor="name" className="entry__label">
+                    Имя
+                  </label>
+                  <input
+                    name="name"
+                    type="text"
+                    minLength="2"
+                    maxLength="30"
+                    pattern="[a-zA-Zа-яА-Я\sёЁ-]{2,30}"
+                    value={values.name || ""}
+                    onChange={handleChange}
+                    className="entry__input"
+                    required
+                  />
+                  <span className="entry__input-error">{errors.name}</span>
+                </>
+              )}
+              <label htmlFor="email" className="entry__label">
+                E-mail
               </label>
               <input
-                name="name"
-                type="text"
-                minLength="2"
-                maxLength="30"
-                pattern="[a-zA-Zа-яА-Я\sёЁ-]{2,30}"
-                value={values.name || ""}
+                name="email"
+                type="email"
+                value={values.email || ""}
                 onChange={handleChange}
                 className="entry__input"
                 required
               />
-              <span className="entry__input-error">{errors.name}</span>
+              <span className="entry__input-error">{errors.email}</span>
+              <label htmlFor="userPassword" className="entry__label">
+                Пароль
+              </label>
+              <input
+                name="password"
+                type="password"
+                value={values.password || ""}
+                onChange={handleChange}
+                className="entry__input"
+                minLength="8"
+                required
+              />
+              <span className="entry__input-error">{errors.password}</span>
+              <div className="entry__button-area">
+                {submitErrorMessage && (
+                  <span className="entry__submit-error">
+                    {userErrorMessage}
+                  </span>
+                )}
+                <button
+                  type="submit"
+                  disabled={isValid === false && true}
+                  className={`entry__button ${
+                    isValid === false && "entry__button_disabled"
+                  }`}
+                >
+                  {buttonTitle}
+                </button>
+              </div>
+              <p className="entry__paragraph">
+                {question}
+                <Link to={linkPath} className="entry__link">
+                  {linkText}
+                </Link>
+              </p>
             </>
           )}
-          <label htmlFor="email" className="entry__label">
-            E-mail
-          </label>
-          <input
-            name="email"
-            type="email"
-            value={values.email || ""}
-            onChange={handleChange}
-            className="entry__input"
-            required
-          />
-          <span className="entry__input-error">{errors.email}</span>
-          <label htmlFor="userPassword" className="entry__label">
-            Пароль
-          </label>
-          <input
-            name="password"
-            type="password"
-            value={values.password || ""}
-            onChange={handleChange}
-            className="entry__input"
-            minLength="8"
-            required
-          />
-          <span className="entry__input-error">{errors.password}</span>
-          <div className="entry__button-area">
-            {submitErrorMessage && (
-              <span className="entry__submit-error">{userErrorMessage}</span>
-            )}
-            <button
-              type="submit"
-              disabled={isValid === false && true}
-              className={`entry__button ${
-                isValid === false && "entry__button_disabled"
-              }`}
-            >
-              {buttonTitle}
-            </button>
-          </div>
-          <p className="entry__paragraph">
-            {question}
-            <Link to={linkPath} className="entry__link">
-              {linkText}
-            </Link>
-          </p>
         </form>
       </div>
     </section>
