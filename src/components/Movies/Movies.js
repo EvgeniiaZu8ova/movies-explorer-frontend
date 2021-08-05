@@ -11,7 +11,7 @@ import SearchForm from "./SearchForm/SearchForm";
 import FilterCheckbox from "./FilterCheckbox/FilterCheckbox";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
 
-function Movies({ onSave }) {
+function Movies({ myMovies, onSave, onDelete }) {
   const [searchMovieInput, setSearchMovieInput] = useState("");
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,13 +28,32 @@ function Movies({ onSave }) {
     setIsCheckboxActive((prev) => !prev);
   }
 
+  function checkIsMovieSaved(movies, myMovies) {
+    return movies.map((el) => {
+      let isSaved;
+
+      if (myMovies.find((item) => item.nameRU === el.nameRU)) {
+        isSaved = true;
+      } else {
+        isSaved = false;
+      }
+
+      el.isSaved = isSaved;
+
+      return el;
+    });
+  }
+
   useEffect(() => {
     const storageFilms = JSON.parse(localStorage.getItem("savedMoviesSearch"));
 
     if (storageFilms) {
-      setMovies(storageFilms);
+      const finalMovies = checkIsMovieSaved(storageFilms, myMovies);
+      setMovies(finalMovies);
+
+      localStorage.setItem("savedMoviesSearch", JSON.stringify(finalMovies));
     }
-  }, []);
+  }, [myMovies]);
 
   useEffect(() => {
     if (searchMovieInput === "") {
@@ -67,7 +86,7 @@ function Movies({ onSave }) {
 
   useEffect(() => {
     const storageFilms = JSON.parse(localStorage.getItem("savedMoviesSearch"));
-    const filteredShortMovies = filterShortMovies(storageFilms);
+    const filteredShortMovies = storageFilms && filterShortMovies(storageFilms);
 
     const finalMovies =
       isCheckboxActive === true ? filteredShortMovies : storageFilms;
@@ -90,7 +109,8 @@ function Movies({ onSave }) {
           isLoading={isLoading}
           isLoadingSuccess={isLoadingSuccess}
           isSearchActive={isSearchActive}
-          onClick={onSave}
+          onSave={onSave}
+          onDelete={onDelete}
         />
       </div>
     </section>

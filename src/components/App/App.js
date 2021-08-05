@@ -94,24 +94,39 @@ function App() {
 
   function handleSaveMovie(movieName) {
     const storageFilms = JSON.parse(localStorage.getItem("savedMoviesSearch"));
-    const myMovie = storageFilms.find((el) => el.nameRU === movieName);
+    const myMovie =
+      storageFilms && storageFilms.find((el) => el.nameRU === movieName);
 
-    return mainApi.createMovie(myMovie).then((data) => {
-      setSavedMovies([...savedMovies, data]);
-    });
+    if (myMovie) {
+      return mainApi
+        .createMovie(myMovie)
+        .then((data) => {
+          setSavedMovies([...savedMovies, data]);
+        })
+        .catch((err) => {
+          console.log("Ошибка при попытке сохранить фильм.", err.message);
+        });
+    }
   }
 
   function handleDeleteMovie(movieName) {
     const myMovie = savedMovies.find((el) => el.nameRU === movieName);
 
-    return mainApi.deleteMovie(myMovie._id).then(() => {
-      setSavedMovies(savedMovies.filter((el) => el._id !== myMovie._id));
-    });
+    return mainApi
+      .deleteMovie(myMovie._id)
+      .then(() => {
+        setSavedMovies(savedMovies.filter((el) => el._id !== myMovie._id));
+      })
+      .catch((err) => {
+        console.log("Ошибка при попытке удалить фильм.", err.message);
+      });
   }
 
   useEffect(() => {
     if (loggedIn) {
       history.push("./movies");
+    } else {
+      history.push("./");
     }
   }, [loggedIn, history]);
 
@@ -124,7 +139,6 @@ function App() {
       })
       .catch((err) => {
         if (err.message === "Ошибка 401") {
-          history.push("./");
           console.log("Необходимо пройти авторизацию");
         } else {
           console.log(
@@ -133,7 +147,7 @@ function App() {
           );
         }
       });
-  }, [history, loggedIn]);
+  }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -149,7 +163,9 @@ function App() {
             path="/movies"
             loggedIn={loggedIn}
             component={Movies}
+            myMovies={savedMovies}
             onSave={handleSaveMovie}
+            onDelete={handleDeleteMovie}
           />
           <ProtectedRoute
             exact
@@ -157,6 +173,7 @@ function App() {
             loggedIn={loggedIn}
             component={SavedMovies}
             movies={savedMovies}
+            onSave={handleSaveMovie}
             onDelete={handleDeleteMovie}
           />
           <ProtectedRoute
@@ -180,7 +197,7 @@ function App() {
             <UnknownPage />
           </Route>
           <Route>
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
           </Route>
         </Switch>
 

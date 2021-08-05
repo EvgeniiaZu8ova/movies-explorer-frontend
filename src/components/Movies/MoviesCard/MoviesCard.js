@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React from "react";
 
 import { useLocation } from "react-router";
 
@@ -8,11 +8,16 @@ import iconDelete from "../../../images/close-icon.svg";
 
 import "./MoviesCard.css";
 
-function MoviesCard({ movie, onClick }) {
-  const { nameRU, duration, image, trailerLink, trailer } = movie;
+function MoviesCard({ movie, onSave, onDelete }) {
+  const {
+    nameRU,
+    duration,
+    image,
+    trailerLink,
+    trailer,
+    isSaved = false,
+  } = movie;
   const finalTrailerLink = trailerLink ? trailerLink : trailer;
-
-  const [isSaved, setIsSaved] = useState(false);
 
   const location = useLocation();
 
@@ -29,15 +34,17 @@ function MoviesCard({ movie, onClick }) {
     : "article__icon-block";
 
   function handleClick(e) {
-    if (location.pathname === "/movies") {
-      setIsSaved((prev) => !prev);
-    }
-
     const movieName = e.target
       .closest(".article")
       .querySelector(".article__title").textContent;
 
-    onClick(movieName);
+    if (location.pathname === "/movies" && isSaved === true) {
+      onDelete(movieName);
+    } else if (location.pathname === "/movies" && isSaved === false) {
+      onSave(movieName);
+    } else {
+      onDelete(movieName);
+    }
   }
 
   return (

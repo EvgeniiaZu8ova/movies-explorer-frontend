@@ -9,7 +9,7 @@ import SearchForm from "../Movies/SearchForm/SearchForm";
 import FilterCheckbox from "../Movies/FilterCheckbox/FilterCheckbox";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 
-function SavedMovies({ movies, onDelete }) {
+function SavedMovies({ movies, onSave, onDelete }) {
   const [searchMovieInput, setSearchMovieInput] = useState("");
   const [filteredMovies, setFilteredMovies] = useState([]);
   // const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +59,8 @@ function SavedMovies({ movies, onDelete }) {
           isLoading={false}
           isLoadingSuccess={true}
           isSearchActive={isSearchActive}
-          onClick={onDelete}
+          onSave={onSave}
+          onDelete={onDelete}
         />
       </div>
     </section>
