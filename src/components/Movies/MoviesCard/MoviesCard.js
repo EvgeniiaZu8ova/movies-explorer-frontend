@@ -1,29 +1,49 @@
-import { React, useState } from "react";
+import React from "react";
 
 import { useLocation } from "react-router";
 
 import iconSave from "../../../images/icon-save.svg";
 import iconSaveActive from "../../../images/icon-save-active.svg";
 import iconDelete from "../../../images/close-icon.svg";
-import cardImage from "../../../images/card-img.jpg";
 
 import "./MoviesCard.css";
 
-function MoviesCard(props) {
+function MoviesCard({ movie, onSave, onDelete }) {
+  const {
+    nameRU,
+    duration,
+    image,
+    trailerLink,
+    trailer,
+    isSaved = false,
+  } = movie;
+  const finalTrailerLink = trailerLink ? trailerLink : trailer;
+
   const location = useLocation();
-  const [isSaved, setIsSaved] = useState(false);
+
+  const movieImage =
+    location.pathname === "/saved-movies"
+      ? image
+      : `https://api.nomoreparties.co${image.url}`;
+
+  const hours = duration && Math.floor(duration / 60);
+  const minutes = duration && duration - hours * 60;
 
   const saveIconClassName = isSaved
     ? "article__icon-block article__icon-block_active"
     : "article__icon-block";
 
-  function onSaveClick() {
-    if (location.pathname !== "/saved-movies") {
-      if (isSaved) {
-        setIsSaved(false);
-      } else {
-        setIsSaved(true);
-      }
+  function handleClick(e) {
+    const movieName = e.target
+      .closest(".article")
+      .querySelector(".article__title").textContent;
+
+    if (location.pathname === "/movies" && isSaved === true) {
+      onDelete(movieName);
+    } else if (location.pathname === "/movies" && isSaved === false) {
+      onSave(movieName);
+    } else {
+      onDelete(movieName);
     }
   }
 
@@ -31,10 +51,12 @@ function MoviesCard(props) {
     <div className="article">
       <div className="article__header">
         <div className="article__description">
-          <h3 className="article__title">33 слова о дизайне</h3>
-          <p className="article__subtitle">1ч 47м</p>
+          <h3 className="article__title">{nameRU}</h3>
+          <p className="article__subtitle">
+            {hours > 0 && `${hours}ч`} {minutes > 0 && `${minutes}м`}
+          </p>
         </div>
-        <div className={saveIconClassName} onClick={onSaveClick}>
+        <div className={saveIconClassName} onClick={handleClick}>
           {location.pathname === "/saved-movies" ? (
             <img
               src={iconDelete}
@@ -50,7 +72,13 @@ function MoviesCard(props) {
           )}
         </div>
       </div>
-      <img src={cardImage} alt="Картинка карточки" className="article__image" />
+      <a href={finalTrailerLink} target="_blank" rel="noreferrer">
+        <img
+          src={movieImage}
+          alt="Картинка карточки"
+          className="article__image"
+        />
+      </a>
     </div>
   );
 }

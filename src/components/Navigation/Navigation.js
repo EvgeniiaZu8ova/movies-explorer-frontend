@@ -15,15 +15,18 @@ function Navigation({ isOpen, onClose }) {
         className="popup__close-icon"
         onClick={onClose}
       />
-      <Link to="/" className="popup__link" onClick={onClose}>
-        Главная
-      </Link>
-      <Link to="/movies" className="popup__link" onClick={onClose}>
-        Фильмы
-      </Link>
-      <Link to="/saved-movies" className="popup__link" onClick={onClose}>
-        Сохранённые фильмы
-      </Link>
+      <div className="popup__links">
+        <Link to="/" className="popup__link" onClick={onClose}>
+          Главная
+        </Link>
+        <Link to="/movies" className="popup__link" onClick={onClose}>
+          Фильмы
+        </Link>
+        <Link to="/saved-movies" className="popup__link" onClick={onClose}>
+          Сохранённые фильмы
+        </Link>
+      </div>
+
       <Link to="/profile" className="popup__button" onClick={onClose}>
         <img
           src={profileIcon}
