@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/movies-explorer-frontend/static/css/main.c93da59a.chunk.css",
+    "main.js": "/movies-explorer-frontend/static/js/main.334d4eb5.chunk.js",
+    "main.js.map": "/movies-explorer-frontend/static/js/main.334d4eb5.chunk.js.map",
+    "runtime-main.js": "/movies-explorer-frontend/static/js/runtime-main.40f3033e.js",
+    "runtime-main.js.map": "/movies-explorer-frontend/static/js/runtime-main.40f3033e.js.map",
+    "static/js/2.f1bd99e9.chunk.js": "/movies-explorer-frontend/static/js/2.f1bd99e9.chunk.js",
+    "static/js/2.f1bd99e9.chunk.js.map": "/movies-explorer-frontend/static/js/2.f1bd99e9.chunk.js.map",
+    "static/js/3.f00c11bf.chunk.js": "/movies-explorer-frontend/static/js/3.f00c11bf.chunk.js",
+    "static/js/3.f00c11bf.chunk.js.map": "/movies-explorer-frontend/static/js/3.f00c11bf.chunk.js.map",
+    "index.html": "/movies-explorer-frontend/index.html",
+    "static/css/main.c93da59a.chunk.css.map": "/movies-explorer-frontend/static/css/main.c93da59a.chunk.css.map",
+    "static/js/2.f1bd99e9.chunk.js.LICENSE.txt": "/movies-explorer-frontend/static/js/2.f1bd99e9.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/movies-explorer-frontend/static/media/Inter-Regular.c8ba52b0.woff2",
+    "static/media/avatar.9eef7c3f.png": "/movies-explorer-frontend/static/media/avatar.9eef7c3f.png",
+    "static/media/close-icon.80dfd5bd.svg": "/movies-explorer-frontend/static/media/close-icon.80dfd5bd.svg",
+    "static/media/icon-save-active.b3917aaa.svg": "/movies-explorer-frontend/static/media/icon-save-active.b3917aaa.svg",
+    "static/media/icon-save.bde1ae1a.svg": "/movies-explorer-frontend/static/media/icon-save.bde1ae1a.svg",
+    "static/media/landing-arrow.2f133fb2.svg": "/movies-explorer-frontend/static/media/landing-arrow.2f133fb2.svg",
+    "static/media/landing-big-logo.aca87362.svg": "/movies-explorer-frontend/static/media/landing-big-logo.aca87362.svg",
+    "static/media/logo.64932df0.svg": "/movies-explorer-frontend/static/media/logo.64932df0.svg",
+    "static/media/profile-icon.7ddf01d2.svg": "/movies-explorer-frontend/static/media/profile-icon.7ddf01d2.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.40f3033e.js",
+    "static/js/2.f1bd99e9.chunk.js",
+    "static/css/main.c93da59a.chunk.css",
+    "static/js/main.334d4eb5.chunk.js"
+  ]
+}
