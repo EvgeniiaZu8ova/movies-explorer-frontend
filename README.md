@@ -49,7 +49,7 @@ At the same time both back-end and front-end parts should be run.
 
 ## Status  
 
-This app is available in Russian language only at the moment. Also you can get acess to full set of options only if you run back-end and front-end on your local machine.
+This app is available in Russian language only at the moment. Also you can get access to full set of options only if you run back-end and front-end on your local machine.
 
 
 # Сайт с поиском фильмов :movie_camera:  
